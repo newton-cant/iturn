@@ -35,6 +35,10 @@ const samih = JSON.parse(fs.readFileSync('./new/simi.json'))
 const ban = JSON.parse(fs.readFileSync('./datauser/banned.json'))
 const imgbb = require('imgbb-uploader');
 const _leveling = JSON.parse(fs.readFileSync('./new/leveling.json'))
+
+const ownername = 'supra-ofc'
+let thumbnail = fs.readFileSync('./image/odc.jpeg')
+
 prefix = '#'
 blocked = []
 const vcard = 'BEGIN:VCARD\n'
@@ -48,6 +52,13 @@ const vcard = 'BEGIN:VCARD\n'
 + 'TEL;type=CELL;type=VOICE;waid=559391919748:+55 93 9191-9748\n' // Nomor bot
 
 + 'END:VCARD' 
+
+const  { ind } = require(`./help`)
+lang = ind 
+
+//times
+const time = moment(Date.now()).tz('Asia/Jakarta').locale('id').format('HH:mm:ss z')
+const salam = moment(Date.now()).tz('Asia/Jakarta').locale('id').format('a')
 
 function kyun(seconds){
   function pad(s){
@@ -176,6 +187,7 @@ console.log(color('|TRM|'), color(`Demote Admin ${num.split('@')[0]} In ${mdata.
 			if (!mek.message) return
 			if (mek.key && mek.key.remoteJid == 'status@broadcast') return
 			if (mek.key.fromMe) return
+						mek.message = (Object.keys(mek.message)[0] === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
 			global.prefix
 			global.blocked
 			const content = JSON.stringify(mek.message)
@@ -208,6 +220,55 @@ console.log(color('|TRM|'), color(`Demote Admin ${num.split('@')[0]} In ${mdata.
 					Badmin: 'PRECISO SER ADM PARA RESPONDER ESSE COMANDO'
 				}
 			}
+			
+				const sendButMessage = (id, text1, desc1, but = [], options = {}) => {
+					const buttonMessage = {
+						contentText: text1,
+						footerText: desc1,
+						buttons: but,
+						headerType: 1,
+						};
+						supra.sendMessage(id, buttonMessage, MessageType.buttonsMessage, options);
+					};
+				const sendButLocation = async (id, text1, desc1, gam1, but = [], options = {}) => {
+					them = gam1
+					mediaxxaa = await supra.prepareMessage(id, them, MessageType.location, {thumbnail: them})
+					locmhan = mediaxxaa.message["ephemeralMessage"] ? mediaxxaa.message.ephemeralMessage : mediaxxaa
+					const buttonMessages = {
+						locationMessage: locmhan.message.locationMessage,
+						contentText: text1,
+						footerText: desc1,
+						buttons: but,
+						headerType: 6
+						}
+						supra.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
+						}
+				const sendButVideo = async(id, text1, desc1, vid1, but = [], options = {}) => {
+					them = vid1
+					mediaxxaa = await supra.prepareMessage(id, them, MessageType.video)
+					vimhan = mediaxxaa.message["ephemeralMessage"] ? mediaxxaa.message.ephemeralMessage : mediaxxaa
+					const buttonMessages = {
+						videoMessage: vimhan.message.videoMessage,
+						contentText: text1,
+						footerText: desc1,
+						buttons: but,
+						headerType: 5
+						}
+						supra.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
+						}
+				const sendButImage = async(id, text1, desc1, vid1, but = [], options = {}) => {
+					them = vid1
+					mediaxxaa = await supra.prepareMessage(id, them, MessageType.image, {thumbnail: Buffer.alloc(0)})
+					imgmhan = mediaxxaa.message["ephemeralMessage"] ? mediaxxaa.message.ephemeralMessage : mediaxxaa
+					const buttonMessages = {
+						imageMessage: imgmhan.message.imageMessage,
+						contentText: text1,
+						footerText: desc1,
+						buttons: but,
+						headerType: 4
+						}
+					supra.sendMessage(id, buttonMessages, MessageType.buttonsMessage, options)
+				}
 	            const nay1 = { key: { fromMe: false, participant: `0@s.whatsapp.net`, ...(from ? { remoteJid: "status@broadcast" } : {}) }, message: { "imageMessage": { "url": "https://mmg.whatsapp.net/d/f/At0x7ZdIvuicfjlf9oWS6A3AR9XPh0P-hZIVPLsI70nM.enc", "mimetype": "image/jpeg","caption": `Supra(Newton)`, 'jpegThumbnail': fs.readFileSync('image/odc.jpeg')} } }					
 	const supra2 ={"key": {   "fromMe": false,"participant":"0@s.whatsapp.net",   "remoteJid": "556181496039-1625944593@g.us"  }, "message": {orderMessage: {itemCount: 999999,status: 200, thumbnail: fs.readFileSync('image/odc.jpeg'), surface: 200, message: `「NEWTON (SUPRA)」❤️`, orderTitle: 'supra', sellerJid: '0@s.whatsapp.net'}}, contextInfo: {"forwardingScore":999,"isForwarded":true},sendEphemeral: true}	
 	        const totalchat = await supra.chats.all()          
@@ -587,33 +648,9 @@ if (budy.includes(`alpin`)) {
 wew = fs.readFileSync('./image/odc.jpeg')
  supra.sendMessage(from, wew, image, { quoted: supra2, thumbnail: fs.readFileSync('./image/supraf.jpg'), caption: mansss })
   break
-
-case 'waifu':
-			const res = await axios.get(`https://i.pinimg.com/736x/6a/f4/43/6af4437506b69872c7ff6ec9b915dbe6.jpg`)
-			const mediaMsg = await supra.prepareMessageMedia(await getBuffer(`https://i.pinimg.com/736x/6a/f4/43/6af4437506b69872c7ff6ec9b915dbe6.jpg`), 'imageMessage')
-            const buttonMessage = {
-			      contentText: 'Waifu',
-				  footerText: 'Pressione o botão abaixo para obter uma imagem waifu aleatória',
-                        "contextInfo": {
-                              participant: data.sender,
-                              stanzaId: data.message.key.id,
-                              quotedMessage: data.message.message,
-							  },
-                              buttons: [
-                                {
-                                 buttonId: `${data.prefix}waifu`,
-                                 buttonText: {
-                                    displayText: `⏯️ Outra imagem `
-                                  },
-                                  "type": "RESPONSE"
-                                },
-                                  ],
-                                   headerType: 4,
-                                ...mediaMsg 
-                                }
-            let zz = await supra.prepareMessageFromContent(data.from, {buttonsMessage: buttonMessage}, {})
-            supra.relayWAMessage(zz, {waitForAck: true}) 
-			break
+case 'menu2':
+sendButLocation(from, lang.menu(prefix, salam, pushname2), '© ' + ownername, thumbnail, [{buttonId: '.owner', buttonText: {displayText: 'Owner'}, type: 1},{buttonId: '.infobot', buttonText:{displayText: 'Infobot'}, type: 1}], {quoted: mek})
+				break
 			
 
        case 'debug':
